@@ -11,5 +11,8 @@ BLACK = "#000000"
 WHITE = "#FFFFFF"
 WIDTH = 1000
 HEIGHT = 650
-FONT_SMALL = pygame.font.SysFont(None, 15)
-FONT_MEDIUM = pygame.font.SysFont(None, 25)
+FONT_SMALL = pygame.font.SysFont(None, 25)
+FONT_MEDIUM = pygame.font.SysFont(None, 40)
+
+# -- Variables --
+choosen = False

@@ -11,6 +11,7 @@ class Timer:
         self.choosen = False
         self.screen = screen
         self.text = self.remaining
+        self.text_rect = pygame.Rect(20, 20, 20, 20)
 
     def start_timer(self):
         pygame.mixer.music.load(f"assets/sounds/{self.song}")
@@ -25,7 +26,7 @@ class Timer:
                 self.text = FONT_MEDIUM.render(str(self.remaining), True, WHITE)
                 self.text_rect = self.text.get_rect(center=(WIDTH//2, HEIGHT//2))
                 self.screen.blit(self.text, self.text_rect)
-        elif not self.choosen:
+        elif not self.choosen and not choosen:
             self.text = FONT_SMALL.render(str(self.remaining), True, WHITE)
-            self.text_Rect = self.text.get_rect(center=(x*40, y*20))
+            self.text_rect = self.text.get_rect(center=(x*40, y*20))
             self.screen.blit(self.text, self.text_rect)
