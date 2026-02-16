@@ -23,6 +23,11 @@ class Timer:
         self.stop_rect = stop_timer_rect
         self.remaining_min = 0
         self.remaining_sec = 0
+        self.select_empty = select_empty
+        self.select_tick = select_tick
+        self.select_rect = pygame.Rect(20, 20, 20, 20)
+        self.selected = False
+        self.effect = False
 
     def initialize_timer(self):
         self.remaining = self.duration
@@ -85,3 +90,11 @@ class Timer:
             self.screen.blit(self.border, self.border_rect)
             self.expand_rect = self.expand.get_rect(center=(x*200+65, y*200-60))
             self.screen.blit(self.expand, self.expand_rect)
+            self.select_rect = select_empty.get_rect(center=(x*200-60, y*200-60))
+            if not self.effect:
+                if not self.selected:
+                    self.screen.blit(self.select_empty, self.select_rect)
+                else:
+                    self.screen.blit(self.select_tick, self.select_rect)
+            if self.effect:
+                self.screen.blit(self.select_tick, self.select_rect)

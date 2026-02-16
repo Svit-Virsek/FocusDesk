@@ -25,7 +25,7 @@ def add_timer():
         
         original = result["song"]
 
-        os.makedirs("asset/sounds", exist_ok=True)
+        os.makedirs("assets/sounds", exist_ok=True)
 
         filename = os.path.basename(original)
         new_path = os.path.join("assets/sounds", filename)

@@ -44,11 +44,16 @@ while running:
                     if add_timer_rect.collidepoint(MOUSE_POS):
                         new_timer = src.scripts.add_timer()
                         timers.append(Timer(new_timer["duration"], new_timer["name"], new_timer["song"], screen))
+                    if trash_rect.collidepoint(MOUSE_POS):
+                        for element in timers:
+                            timers = [t for t in timers if not t.selected]
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
                             src.constants.selected_timer.initialize_timer()
                             break
+                        if element.select_rect.collidepoint(MOUSE_POS):
+                            element.selected = not element.selected
                 elif src.constants.selected_timer!=None:
                     if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
                         src.constants.selected_timer.stop_timer()
@@ -85,11 +90,19 @@ while running:
             x=1
     screen.blit(add_timer, add_timer_rect)
 
-    # -- Info texts --
+    # -- Info texts and effects --
     if src.constants.selected_timer==None:
         for element in timers:
             if element.expand_rect.collidepoint(MOUSE_POS):
                 screen.blit(info_expand, info_rect)
+            if element.select_rect.collidepoint(MOUSE_POS):
+                element.effect = True
+                if element.selected:
+                    screen.blit(info_deselect, info_rect)
+                else:
+                    screen.blit(info_select, info_rect)
+            elif not element.select_rect.collidepoint(MOUSE_POS):
+                element.effect = False
     elif src.constants.selected_timer!=None:
         if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
             screen.blit(info_reduce, info_rect)
@@ -99,6 +112,10 @@ while running:
             screen.blit(info_stop, info_rect)
     if add_timer_rect.collidepoint(MOUSE_POS):
         screen.blit(info_add_timer, info_rect)
+    if trash_rect.collidepoint(MOUSE_POS):
+        screen.blit(trash_open, trash_rect)
+    else:
+        screen.blit(trash, trash_rect)
 
     pygame.display.flip()
     clock.tick(60)
