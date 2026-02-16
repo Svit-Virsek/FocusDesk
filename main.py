@@ -26,6 +26,10 @@ def save_timers(data):
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 timers = load_timers()
 
+# -- Clock --
+clock = pygame.time.Clock()
+dt = 0.0
+
 # -- Main loop --
 running = True
 while running:
@@ -40,19 +44,29 @@ while running:
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
+                            src.constants.selected_timer.initialize_timer()
                             break
                 elif src.constants.selected_timer!=None:
                     if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
+                        src.constants.selected_timer.stop_timer()
+                        src.constants.selected_timer.initialize_timer()
                         src.constants.selected_timer = None
-                        pygame.mixer.music.stop()
                         break
                     if src.constants.selected_timer.start_rect.collidepoint(MOUSE_POS) and not src.constants.selected_timer.active:
-                        src.constants.selected_timer.start_timer()
+                        src.constants.selected_timer.unpause_timer()
+                        dt = clock.tick(60) / 1000.0
                         break
                     if src.constants.selected_timer.stop_rect.collidepoint(MOUSE_POS) and src.constants.selected_timer.active:
-                        src.constants.selected_timer.active = False
+                        src.constants.selected_timer.pause_timer()
                         pygame.mixer.music.stop()
                         break
+
+    # -- Update time --
+    if src.constants.selected_timer!=None:
+        if src.constants.selected_timer.active == True:
+            src.constants.selected_timer.remaining-=dt
+        if src.constants.selected_timer.remaining <=0:
+            src.constants.selected_timer.stop_timer()
 
     # -- Draw elemnts --
     screen.fill(WHITE)
@@ -82,3 +96,4 @@ while running:
         screen.blit(info_add_timer, info_rect)
 
     pygame.display.flip()
+    clock.tick(60)
