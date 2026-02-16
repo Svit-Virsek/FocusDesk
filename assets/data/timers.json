@@ -1,7 +1,7 @@
 [
     {
-        "duration": 60,
-        "name": "Template",
+        "duration": 3600,
+        "name": "NPZ Timer",
         "song": "intergalactic.mp3"
     }
 ]

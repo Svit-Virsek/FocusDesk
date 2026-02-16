@@ -47,6 +47,13 @@ while running:
                     if trash_rect.collidepoint(MOUSE_POS):
                         for element in timers:
                             timers = [t for t in timers if not t.selected]
+                    if edit_rect.collidepoint(MOUSE_POS):
+                        for element in timers:
+                            if element.selected:
+                                timers.remove(element)
+                                new_timer = src.scripts.add_timer()
+                                timers.append(Timer(new_timer["duration"], new_timer["name"], new_timer["song"], screen))
+                                break
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
@@ -114,8 +121,14 @@ while running:
         screen.blit(info_add_timer, info_rect)
     if trash_rect.collidepoint(MOUSE_POS):
         screen.blit(trash_open, trash_rect)
+        screen.blit(info_del, info_rect)
     else:
         screen.blit(trash, trash_rect)
+    if edit_rect.collidepoint(MOUSE_POS):
+        screen.blit(edit_effect, edit_rect)
+        screen.blit(info_edit, info_rect)
+    else:
+        screen.blit(edit, edit_rect)
 
     pygame.display.flip()
     clock.tick(60)
