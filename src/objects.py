@@ -17,6 +17,10 @@ class Timer:
         self.expand_rect = pygame.Rect(20, 20, 20, 20)
         self.reduce = reduce_timer
         self.reduce_rect = pygame.Rect(20, 20, 20, 20)
+        self.start = start_timer
+        self.start_rect = start_timer_rect
+        self.stop = stop_timer
+        self.stop_rect = stop_timer_rect
 
     def start_timer(self):
         pygame.mixer.music.load(f"assets/sounds/{self.song}")
@@ -35,10 +39,16 @@ class Timer:
                 self.screen.blit(self.border, self.border_rect)
                 self.reduce_rect = self.reduce.get_rect(center=(WIDTH//2+60, HEIGHT//2-60))
                 self.screen.blit(self.reduce, self.reduce_rect)
+                self.screen.blit(self.stop, self.stop_rect)
             elif not self.active:
                 self.text = FONT_MEDIUM.render(str(self.remaining), True, BLACK)
                 self.text_rect = self.text.get_rect(center=(WIDTH//2, HEIGHT//2))
                 self.screen.blit(self.text, self.text_rect)
+                self.border_rect = self.border.get_rect(center=(WIDTH//2, HEIGHT//2))
+                self.screen.blit(self.border, self.border_rect)
+                self.reduce_rect = self.reduce.get_rect(center=(WIDTH//2+60, HEIGHT//2-60))
+                self.screen.blit(self.reduce, self.reduce_rect)
+                self.screen.blit(self.start, self.start_rect)
         elif src.constants.selected_timer==None:
             self.text = FONT_SMALL.render(str(self.remaining), True, BLACK)
             self.text_rect = self.text.get_rect(center=(x*200+5, y*200))

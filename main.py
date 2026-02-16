@@ -40,15 +40,21 @@ while running:
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
-                            element.start_timer()
                             break
                 elif src.constants.selected_timer!=None:
                     if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
                         src.constants.selected_timer = None
                         pygame.mixer.music.stop()
                         break
+                    if src.constants.selected_timer.start_rect.collidepoint(MOUSE_POS) and not src.constants.selected_timer.active:
+                        src.constants.selected_timer.start_timer()
+                        break
+                    if src.constants.selected_timer.stop_rect.collidepoint(MOUSE_POS) and src.constants.selected_timer.active:
+                        src.constants.selected_timer.active = False
+                        pygame.mixer.music.stop()
+                        break
 
-    # -- Drwa elemnts --
+    # -- Draw elemnts --
     screen.fill(WHITE)
     x=1
     y=1
@@ -68,6 +74,10 @@ while running:
     elif src.constants.selected_timer!=None:
         if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
             screen.blit(info_reduce, info_rect)
+        if src.constants.start_timer_rect.collidepoint(MOUSE_POS) and not src.constants.selected_timer.active:
+            screen.blit(info_start, info_rect)
+        elif src.constants.stop_timer_rect.collidepoint(MOUSE_POS) and src.constants.selected_timer.active:
+            screen.blit(info_stop, info_rect)
     if add_timer_rect.collidepoint(MOUSE_POS):
         screen.blit(info_add_timer, info_rect)
 
