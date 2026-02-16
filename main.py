@@ -1,4 +1,4 @@
-import pygame, sys, json, src.constants
+import pygame, sys, json, src.constants, src.scripts
 from pygame.locals import *
 from src.constants import *
 from src.objects import *
@@ -41,6 +41,9 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 if src.constants.selected_timer==None:
+                    if add_timer_rect.collidepoint(MOUSE_POS):
+                        new_timer = src.scripts.add_timer()
+                        timers.append(Timer(new_timer["duration"], new_timer["name"], new_timer["song"], screen))
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
@@ -99,3 +102,4 @@ while running:
 
     pygame.display.flip()
     clock.tick(60)
+    save_timers(timers)
