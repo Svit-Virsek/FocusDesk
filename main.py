@@ -1,4 +1,4 @@
-import pygame, sys, json
+import pygame, sys, json, src.constants
 from pygame.locals import *
 from src.constants import *
 from src.objects import *
@@ -29,33 +29,46 @@ timers = load_timers()
 # -- Main loop --
 running = True
 while running:
+    # -- Event handling --
     MOUSE_POS = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                for element in timers:
-                    if element.text_rect.collidepoint(MOUSE_POS):
-                        if not choosen:
-                            choosen = True
-                            element.choosen = True
-                            element.active = True
+                if src.constants.selected_timer==None:
+                    for element in timers:
+                        if element.expand_rect.collidepoint(MOUSE_POS):
+                            src.constants.selected_timer = element
                             element.start_timer()
-                        elif choosen:
-                            choosen = False
-                            element.choosen = False
-                            element.active = False
-                            pygame.mixer.music.stop()
+                            break
+                elif src.constants.selected_timer!=None:
+                    if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
+                        src.constants.selected_timer = None
+                        pygame.mixer.music.stop()
+                        break
 
-    screen.fill(BLACK)
+    # -- Drwa elemnts --
+    screen.fill(WHITE)
     x=1
-    y=6
+    y=1
     for element in timers:
         element.update(x, y)
         x+=1
-        if(x%9==0):
+        if(x%5==0):
             y+=1
             x=1
+    screen.blit(add_timer, add_timer_rect)
+
+    # -- Info texts --
+    if src.constants.selected_timer==None:
+        for element in timers:
+            if element.expand_rect.collidepoint(MOUSE_POS):
+                screen.blit(info_expand, info_rect)
+    elif src.constants.selected_timer!=None:
+        if src.constants.selected_timer.reduce_rect.collidepoint(MOUSE_POS):
+            screen.blit(info_reduce, info_rect)
+    if add_timer_rect.collidepoint(MOUSE_POS):
+        screen.blit(info_add_timer, info_rect)
 
     pygame.display.flip()
