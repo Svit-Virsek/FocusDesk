@@ -53,6 +53,8 @@ while running:
                         src.constants.selected_timer = None
                         break
                     if src.constants.selected_timer.start_rect.collidepoint(MOUSE_POS) and not src.constants.selected_timer.active:
+                        if src.constants.selected_timer.remaining == 0:
+                            src.constants.selected_timer.initialize_timer()
                         src.constants.selected_timer.unpause_timer()
                         dt = clock.tick(60) / 1000.0
                         break

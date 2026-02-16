@@ -21,13 +21,15 @@ class Timer:
         self.start_rect = start_timer_rect
         self.stop = stop_timer
         self.stop_rect = stop_timer_rect
+        self.remaining_min = 0
+        self.remaining_sec = 0
 
     def initialize_timer(self):
         self.remaining = self.duration
 
     def stop_timer(self):
         self.active = False
-        self.reamining = 0
+        self.remaining = 0
         pygame.mixer.music.stop()
 
     def pause_timer(self):
@@ -43,7 +45,12 @@ class Timer:
     def update(self, x, y):
         if src.constants.selected_timer == self:
             if self.active:
-                self.text = FONT_MEDIUM.render(str(int(self.remaining)), True, BLACK)
+                if self.remaining!=0:
+                    self.remaining_min = int(self.remaining//60)
+                    self.remaining_sec = int(self.remaining%60)
+                    self.text = FONT_MEDIUM.render(f"{self.remaining_min}:{self.remaining_sec}", True, BLACK)
+                else:
+                    self.text = FONT_MEDIUM.render("00:00", True, BLACK)
                 self.text_rect = self.text.get_rect(center=(WIDTH//2, HEIGHT//2))
                 self.screen.blit(self.text, self.text_rect)
                 self.border_rect = self.border.get_rect(center=(WIDTH//2, HEIGHT//2))
@@ -52,7 +59,12 @@ class Timer:
                 self.screen.blit(self.reduce, self.reduce_rect)
                 self.screen.blit(self.stop, self.stop_rect)
             elif not self.active:
-                self.text = FONT_MEDIUM.render(str(int(self.remaining)), True, BLACK)
+                if self.remaining!=0:
+                    self.remaining_min = int(self.remaining//60)
+                    self.remaining_sec = int(self.remaining%60)
+                    self.text = FONT_MEDIUM.render(f"{self.remaining_min}:{self.remaining_sec}", True, BLACK)
+                else:
+                    self.text = FONT_MEDIUM.render("00:00", True, BLACK)
                 self.text_rect = self.text.get_rect(center=(WIDTH//2, HEIGHT//2))
                 self.screen.blit(self.text, self.text_rect)
                 self.border_rect = self.border.get_rect(center=(WIDTH//2, HEIGHT//2))
@@ -61,7 +73,12 @@ class Timer:
                 self.screen.blit(self.reduce, self.reduce_rect)
                 self.screen.blit(self.start, self.start_rect)
         elif src.constants.selected_timer==None:
-            self.text = FONT_SMALL.render(str(int(self.remaining)), True, BLACK)
+            if self.remaining!=0:
+                    self.remaining_min = int(self.remaining//60)
+                    self.remaining_sec = int(self.remaining%60)
+                    self.text = FONT_MEDIUM.render(f"{self.remaining_min}:{self.remaining_sec}", True, BLACK)
+            else:
+                self.text = FONT_MEDIUM.render("00:00", True, BLACK)
             self.text_rect = self.text.get_rect(center=(x*200+5, y*200))
             self.screen.blit(self.text, self.text_rect)
             self.border_rect = self.border.get_rect(center=(x*200+5, y*200))
