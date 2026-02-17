@@ -66,10 +66,6 @@ def add_timer():
 
     return result
 
-
-import tkinter as tk
-
-
 def choose_preset(presets):
     selected = {"value": None}
     index = 0
