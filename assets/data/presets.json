@@ -1,0 +1,17 @@
+[
+    {
+        "duration": 3600,
+        "name": "StudyFocus",
+        "song": "preset1#.mp3"
+    },
+    {
+        "duration": 1200,
+        "name": "Relaxation",
+        "song": "preset2#.mp3"
+    },
+    {
+        "duration": 7200,
+        "name": "Chill",
+        "song": "preset3#.mp3"
+    }
+]

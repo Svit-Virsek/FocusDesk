@@ -65,3 +65,61 @@ def add_timer():
     root.mainloop()
 
     return result
+
+
+import tkinter as tk
+
+
+def choose_preset(presets):
+    selected = {"value": None}
+    index = 0
+
+    root = tk.Tk()
+    root.title("Choose preset")
+    root.geometry("350x200")
+    root.resizable(False, False)
+
+    name_label = tk.Label(root, font=("Arial", 14))
+    duration_label = tk.Label(root)
+    song_label = tk.Label(root)
+
+    name_label.pack(pady=10)
+    duration_label.pack()
+    song_label.pack()
+
+    def update():
+        p = presets[index]
+        name_label.config(text=p["name"])
+        min = p["duration"]//60
+        sec = p["duration"]%60
+        h = min//60
+        if h!=0:
+            min-=h*60
+            duration_label.config(text=f"Duration: {h}:{min}:{sec}")
+        else:
+            duration_label.config(text=f"Duration: {min}:{sec}")
+        song_label.config(text=f"Song: {p['song']}")
+
+    def up(event=None):
+        nonlocal index
+        index = (index - 1) % len(presets)
+        update()
+
+    def down(event=None):
+        nonlocal index
+        index = (index + 1) % len(presets)
+        update()
+
+    def add():
+        selected["value"] = presets[index]
+        root.destroy()
+
+    tk.Button(root, text="Add", command=add).pack(pady=15)
+
+    root.bind("<Up>", up)
+    root.bind("<Down>", down)
+
+    update()
+    root.mainloop()
+
+    return selected["value"]

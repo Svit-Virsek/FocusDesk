@@ -84,13 +84,13 @@ class Timer:
                     self.text = FONT_MEDIUM.render(f"{self.remaining_min}:{self.remaining_sec}", True, BLACK)
             else:
                 self.text = FONT_MEDIUM.render("00:00", True, BLACK)
-            self.text_rect = self.text.get_rect(center=(x*200+5, y*200))
+            self.text_rect = self.text.get_rect(center=(x*200-80, y*200))
             self.screen.blit(self.text, self.text_rect)
-            self.border_rect = self.border.get_rect(center=(x*200+5, y*200))
+            self.border_rect = self.border.get_rect(center=(x*200-80, y*200))
             self.screen.blit(self.border, self.border_rect)
-            self.expand_rect = self.expand.get_rect(center=(x*200+65, y*200-60))
+            self.expand_rect = self.expand.get_rect(center=(x*200-30, y*200-60))
             self.screen.blit(self.expand, self.expand_rect)
-            self.select_rect = select_empty.get_rect(center=(x*200-60, y*200-60))
+            self.select_rect = select_empty.get_rect(center=(x*200-130, y*200-60))
             if not self.effect:
                 if not self.selected:
                     self.screen.blit(self.select_empty, self.select_rect)

@@ -6,7 +6,7 @@ pygame.init()
 
 # -- Collect data --
 def load_timers():
-    with open("assets/data/timers.json") as f:
+    with open(f"assets/data/timers.json") as f:
         data = json.load(f)
 
     output = []
@@ -22,9 +22,16 @@ def save_timers(data):
     with open("assets/data/timers.json", "w") as f:
         json.dump(to_save, f, indent=4)
 
+def load_presets():
+    with open("assets/data/presets.json") as f:
+        data = json.load(f)
+
+    return data
+
 # -- Screen elements --
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 timers = load_timers()
+presets = load_presets()
 
 # -- Clock --
 clock = pygame.time.Clock()
@@ -54,6 +61,9 @@ while running:
                                 new_timer = src.scripts.add_timer()
                                 timers.append(Timer(new_timer["duration"], new_timer["name"], new_timer["song"], screen))
                                 break
+                    if preset_rect.collidepoint(MOUSE_POS):
+                        new_timer = src.scripts.choose_preset(presets)
+                        timers.append(Timer(new_timer["duration"], new_timer["name"], new_timer["song"], screen))
                     for element in timers:
                         if element.expand_rect.collidepoint(MOUSE_POS):
                             src.constants.selected_timer = element
@@ -87,6 +97,8 @@ while running:
 
     # -- Draw elemnts --
     screen.fill(WHITE)
+    pygame.draw.rect(screen, GREY, (0, 0, WIDTH, 80))
+    pygame.draw.rect(screen, GREY, (WIDTH-80, 0, 80, HEIGHT))
     x=1
     y=1
     for element in timers:
@@ -96,6 +108,8 @@ while running:
             y+=1
             x=1
     screen.blit(add_timer, add_timer_rect)
+    screen.blit(logo, logo_rect)
+    screen.blit(preset, preset_rect)
 
     # -- Info texts and effects --
     if src.constants.selected_timer==None:
@@ -129,6 +143,8 @@ while running:
         screen.blit(info_edit, info_rect)
     else:
         screen.blit(edit, edit_rect)
+    if preset_rect.collidepoint(MOUSE_POS):
+        screen.blit(info_preset, info_rect)
 
     pygame.display.flip()
     clock.tick(60)
